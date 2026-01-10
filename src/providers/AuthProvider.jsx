@@ -11,6 +11,7 @@ import {
 } from 'firebase/auth'
 import { app } from '../firebase/firebase.config'
 import { AuthContext } from './AuthContext'
+import toast from 'react-hot-toast'
 
 const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
@@ -36,6 +37,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     setLoading(true)
+    toast.success("Logout Successful.")
     return signOut(auth)
   }
 

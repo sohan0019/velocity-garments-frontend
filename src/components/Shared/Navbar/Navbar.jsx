@@ -43,7 +43,7 @@ const Navbar = () => {
               >
                 <AiOutlineMenu />
                 <img
-                  className="hidden md:block rounded-full"
+                  className="hidden md:block rounded-full w-10 h-10"
                   src={user?.photoURL || avatarImg}
                   alt="profile"
                   width="30"
