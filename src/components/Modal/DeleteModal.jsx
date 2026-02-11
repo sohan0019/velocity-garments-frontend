@@ -1,6 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
-const DeleteModal = ({ closeModal, isOpen }) => {
+const DeleteModal = ({ closeModal, isOpen, handleDelete }) => {
   return (
     <Dialog
       open={isOpen}
@@ -29,6 +29,7 @@ const DeleteModal = ({ closeModal, isOpen }) => {
             <div className='flex mt-2 justify-around'>
               <button
                 type='button'
+                onClick={handleDelete}
                 className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
               >
                 Yes

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import DeleteModal from '../../Modal/DeleteModal'
-import UpdatePlantModal from '../../Modal/UpdatePlantModal'
+import UpdatePlantModal from '../../Modal/UpdateProductModal'
 
 const PlantDataRow = () => {
   let [isOpen, setIsOpen] = useState(false)

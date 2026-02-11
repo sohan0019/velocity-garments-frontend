@@ -1,8 +1,10 @@
-const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
+const Button = ({ label, onClick, disabled, outline, small, icon: Icon, type = "button", value }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
+      type={type}
+      value={value}
       className={`
           relative
           disabled:opacity-70
@@ -13,11 +15,11 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
           cursor-pointer
           px-4
           w-full
-          ${outline ? 'bg-white' : 'bg-lime-500'}
+          ${outline ? 'bg-white' : 'bg-amber-200'}
           ${outline ? 'border-black' : 'border-lime-500'}
-          ${outline ? 'text-black' : 'text-white'}
+          ${outline ? 'text-black' : 'text-black'}
           ${small ? 'text-sm' : 'text-md'}
-          ${small ? 'py-1' : 'py-3'}
+          ${small ? 'py-1' : 'py-2'}
           ${small ? 'font-light' : 'font-semibold'}
           ${small ? 'border' : 'border-2'}
         `}

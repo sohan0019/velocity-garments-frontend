@@ -2,18 +2,21 @@ import Home from '../pages/Home/Home'
 import ErrorPage from '../pages/ErrorPage'
 import Login from '../pages/Login/Login'
 import SignUp from '../pages/SignUp/SignUp'
-import PlantDetails from '../pages/PlantDetails/PlantDetails'
+import PlantDetails from '../pages/ProductDetails/ProductDetails'
 import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
-import AddPlant from '../pages/Dashboard/Seller/AddPlant'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import MyInventory from '../pages/Dashboard/Seller/MyInventory'
-import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
+import MyInventory from '../pages/Dashboard/Manager/MyInventory'
 import MyOrders from '../pages/Dashboard/Customer/MyOrders'
 import { createBrowserRouter } from 'react-router'
+import AllProducts from '../pages/AllProducts/AllProducts'
+import BuyingForm from '../pages/BookingForm/BuyingForm'
+import AddProduct from '../pages/Dashboard/Manager/AddProduct'
+import ManageProducts from '../pages/Dashboard/Manager/ManageProducts'
+import ProductDetails from '../pages/ProductDetails/ProductDetails'
 
 export const router = createBrowserRouter([
   {
@@ -26,8 +29,18 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/plant/:id',
-        element: <PlantDetails />,
+        path: '/all-products',
+        element: <AllProducts />,
+      },
+      {
+        path: '/product/:id',
+        element: <PrivateRoute>
+          <ProductDetails /> 
+        </PrivateRoute>,
+      },
+      {
+        path: '/buying-form/:id',
+        element: <BuyingForm />,
       },
     ],
   },
@@ -50,10 +63,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'add-plant',
+        path: 'add-product',
         element: (
           <PrivateRoute>
-            <AddPlant />
+            <AddProduct />
           </PrivateRoute>
         ),
       },
@@ -90,8 +103,8 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'manage-orders',
-        element: <ManageOrders />,
+        path: 'manage-products',
+        element: <ManageProducts />,
       },
     ],
   },

@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import UpdatePlantForm from '../Form/UpdatePlantForm'
+import UpdateProductForm from '../Form/UpdateProductForm'
 
-const UpdatePlantModal = ({ setIsEditModalOpen, isOpen }) => {
+const UpdateProductModal = ({ setIsEditModalOpen, isOpen, product, onUpdate }) => {
   return (
     <Dialog
       open={isOpen}
@@ -13,7 +13,7 @@ const UpdatePlantModal = ({ setIsEditModalOpen, isOpen }) => {
         <div className='flex min-h-full items-center justify-center p-4'>
           <DialogPanel
             transition
-            className='w-full max-w-md bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl rounded-2xl'
+            className='w-full max-w-xl bg-gray-100 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl rounded-2xl'
           >
             <div className='flex justify-end'>
               <button
@@ -27,10 +27,13 @@ const UpdatePlantModal = ({ setIsEditModalOpen, isOpen }) => {
               as='h3'
               className='text-lg font-medium text-center leading-6 text-gray-900'
             >
-              Update Plant Info
+              Update Product Info
             </DialogTitle>
             <div className='mt-2 w-full'>
-              <UpdatePlantForm />
+              <UpdateProductForm 
+              product={product} 
+              onUpdate={onUpdate}
+            />
             </div>
           </DialogPanel>
         </div>
@@ -39,4 +42,4 @@ const UpdatePlantModal = ({ setIsEditModalOpen, isOpen }) => {
   )
 }
 
-export default UpdatePlantModal
+export default UpdateProductModal

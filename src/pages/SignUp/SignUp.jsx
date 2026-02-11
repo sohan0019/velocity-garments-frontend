@@ -19,7 +19,7 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const {name, email, image, password} = data;
+    const { name, email, image, password, role } = data;
 
     const imageFile = image[0];
 
@@ -28,10 +28,10 @@ const SignUp = () => {
 
       const result = await createUser(email, password)
 
-      // await saveOrUpdateUser({name, email, image: imageURL})
+      await saveOrUpdateUser({name, email, image: imageURL, role, status: 'Pending'})
 
       await updateUserProfile(name, imageURL)
-      console.log(result)
+      // console.log(result)
 
       navigate(from, { replace: true })
       toast.success('Signup Successful')
@@ -44,12 +44,14 @@ const SignUp = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      const {user} = await signInWithGoogle();
-      // await saveOrUpdateUser ({
-      //   name: user?.displayName,
-      //   email: user?.email,
-      //   image: user.photoURL,
-      // })
+      const { user } = await signInWithGoogle();
+      await saveOrUpdateUser ({
+        name: user?.displayName,
+        email: user?.email,
+        image: user.photoURL,
+        role: 'Buyer',
+        status: 'Pending',
+      })
 
       navigate(from, { replace: true })
       toast.success('Signup Successful')
@@ -83,7 +85,7 @@ const SignUp = () => {
                 placeholder='Enter Your Name Here'
                 className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
                 data-temp-mail-org='0'
-                {...register('name',{
+                {...register('name', {
                   required: 'Name is required.',
                   maxLength: {
                     value: 25,
@@ -95,7 +97,7 @@ const SignUp = () => {
                 errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>
               }
             </div>
-            
+
             <div>
               <label
                 htmlFor='image'
@@ -117,7 +119,7 @@ const SignUp = () => {
       bg-gray-100 border border-dashed border-lime-300 rounded-md cursor-pointer
       focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400
       py-2'
-              {...register('image')}
+                {...register('image')}
               />
               <p className='mt-1 text-xs text-gray-500'>
                 PNG, JPG or JPEG (Max 2MB)
@@ -170,6 +172,27 @@ const SignUp = () => {
               {
                 errors.password && <p className='text-red-500 text-xs mt-1'>{errors.password.message}</p>
               }
+            </div>
+
+            <div className='space-y-1 text-sm flex-1'>
+              <label htmlFor='role' className='block text-gray-600 font-semibold mb-2'>
+                Select Role
+              </label>
+              <select
+                id='role'
+                defaultValue=''
+                className='w-full px-4 py-3 border border-gray-300 focus:outline-lime-500 rounded-md bg-gray-200 text-gray-900 cursor-pointer appearance-none'
+                {...register('role', { required: 'Please select a role' })}
+              >
+                <option value='' disabled>
+                  Choose your role
+                </option>
+                <option value='Buyer'>Buyer</option>
+                <option value='Manager'>Manager</option>
+              </select>
+              {errors.role && (
+                <p className='text-red-500 text-xs mt-1'>{errors.role.message}</p>
+              )}
             </div>
           </div>
 

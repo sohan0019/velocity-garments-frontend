@@ -1,4 +1,4 @@
-import AddPlantForm from '../../../components/Form/AddPlantForm'
+import AddPlantForm from '../../../components/Form/AddProductForm'
 
 const AddPlant = () => {
   return (

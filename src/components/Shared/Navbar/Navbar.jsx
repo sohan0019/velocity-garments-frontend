@@ -13,7 +13,7 @@ const Navbar = () => {
   const links = (
     <>
       <li><NavLink className="hover:text-blue-900" to="/">Home</NavLink></li>
-      <li><NavLink className="hover:text-blue-900" to="/">All Products</NavLink></li>
+      <li><NavLink className="hover:text-blue-900" to="/all-products">All Products</NavLink></li>
       <li><NavLink className="hover:text-blue-900" to="/">About Us</NavLink></li>
       <li><NavLink className="hover:text-blue-900" to="/">Contact</NavLink></li>
     </>
@@ -44,7 +44,8 @@ const Navbar = () => {
                 <AiOutlineMenu />
                 <img
                   className="hidden md:block rounded-full w-10 h-10"
-                  src={user?.photoURL || avatarImg}
+                  src={user?.photoURL || user?.image || avatarImg}
+                  referrerPolicy="no-referrer"
                   alt="profile"
                   width="30"
                 />

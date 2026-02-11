@@ -37,7 +37,7 @@ const Footer = () => {
               </div>
             </nav>
           </footer>
-          <p className='text-base font-semibold text-center text-blue-950 mt-6'>2026@ All Rights Reserved</p>
+          <p className='text-base font-semibold text-center text-blue-950 mt-6'>Velocity Garments - 2026 @ All Rights Reserved</p>
         </div>
 
       </Container>
