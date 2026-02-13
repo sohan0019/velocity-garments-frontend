@@ -1,19 +1,23 @@
 import { useState } from 'react'
-import UpdateUserRoleModal from '../../Modal/UpdateUserRoleModal'
+import UpdateUserStatusModal from '../../Modal/UpdateUserStatusModal'
 
-const UserDataRow = () => {
+const UserDataRow = ({user, refetch}) => {
   let [isOpen, setIsOpen] = useState(false)
   const closeModal = () => setIsOpen(false)
+
   return (
     <tr>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 '>abc@gmail.com</p>
+        <p className='text-gray-900 '>{user?.name}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 '>Customer</p>
+        <p className='text-gray-900 '>{user?.email}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className=''>Unavailable</p>
+        <p className=''>{user?.role}</p>
+      </td>
+      <td className={`px-5 py-5 border-b border-gray-200 bg-white text-sm ${user.status === 'pending' ? 'text-red-600 ' : 'text-green-600'}`}>
+        <p className=''>{user?.status}</p>
       </td>
 
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -25,13 +29,14 @@ const UserDataRow = () => {
             aria-hidden='true'
             className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
           ></span>
-          <span className='relative'>Update Role</span>
+          <span className='relative'>Update Status</span>
         </span>
         {/* Modal */}
-        <UpdateUserRoleModal
+        <UpdateUserStatusModal
           isOpen={isOpen}
           closeModal={closeModal}
-          role='customer'
+          user={user}
+          refetch={refetch}
         />
       </td>
     </tr>

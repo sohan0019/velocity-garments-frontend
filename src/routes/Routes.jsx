@@ -2,7 +2,6 @@ import Home from '../pages/Home/Home'
 import ErrorPage from '../pages/ErrorPage'
 import Login from '../pages/Login/Login'
 import SignUp from '../pages/SignUp/SignUp'
-import PlantDetails from '../pages/ProductDetails/ProductDetails'
 import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
@@ -10,13 +9,15 @@ import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
 import MyInventory from '../pages/Dashboard/Manager/MyInventory'
-import MyOrders from '../pages/Dashboard/Customer/MyOrders'
+import MyOrders from '../pages/Dashboard/Buyer/MyOrders'
 import { createBrowserRouter } from 'react-router'
-import AllProducts from '../pages/AllProducts/AllProducts'
+import Products from '../pages/Products/Products'
 import BuyingForm from '../pages/BookingForm/BuyingForm'
 import AddProduct from '../pages/Dashboard/Manager/AddProduct'
 import ManageProducts from '../pages/Dashboard/Manager/ManageProducts'
 import ProductDetails from '../pages/ProductDetails/ProductDetails'
+import AllProducts from '../pages/Dashboard/Admin/AllProducts'
+import AllOrders from '../pages/Dashboard/Admin/AllOrders'
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +30,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/all-products',
-        element: <AllProducts />,
+        path: '/products',
+        element: <Products />,
       },
       {
         path: '/product/:id',
@@ -83,6 +84,22 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ManageUsers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'all-products',
+        element: (
+          <PrivateRoute>
+            <AllProducts />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'all-orders',
+        element: (
+          <PrivateRoute>
+            <AllOrders />
           </PrivateRoute>
         ),
       },

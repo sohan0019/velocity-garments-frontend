@@ -1,8 +1,30 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
-const UpdateUserRoleModal = ({ isOpen, closeModal, role }) => {
-  const [updatedRole, setUpdatedRole] = useState(role)
+const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
+  const [updatedStatus, setUpdatedStatus] = useState(user?.status)
+
+  const axiosSecure = useAxiosSecure();
+
+  const handleStatusUpdate = async () => {
+    try {
+      await axiosSecure.patch('/update-status', {
+        email: user?.email,
+        status: updatedStatus,
+      })
+      toast.success('Status updated!')
+      refetch();
+    }
+    catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.message);
+    }
+    finally{
+      closeModal();
+    }
+  }
 
   return (
     <>
@@ -22,25 +44,25 @@ const UpdateUserRoleModal = ({ isOpen, closeModal, role }) => {
                 as='h3'
                 className='text-base/7 font-medium text-black'
               >
-                Update User Role
+                Update User Status
               </DialogTitle>
               <form>
                 <div>
                   <select
-                    value={updatedRole}
-                    onChange={e => setUpdatedRole(e.target.value)}
+                    value={updatedStatus}
+                    onChange={e => setUpdatedStatus(e.target.value)}
                     className='w-full my-3 border border-gray-200 rounded-xl px-2 py-3'
-                    name='role'
+                    name='status'
                     id=''
                   >
-                    <option value='customer'>Customer</option>
-                    <option value='seller'>Seller</option>
-                    <option value='admin'>Admin</option>
+                    <option value='Approve'>Approve</option>
+                    <option value='Suspend'>Suspend</option>
                   </select>
                 </div>
                 <div className='flex mt-2 justify-around'>
                   <button
                     type='button'
+                    onClick={handleStatusUpdate}
                     className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
                   >
                     Update
@@ -61,4 +83,4 @@ const UpdateUserRoleModal = ({ isOpen, closeModal, role }) => {
     </>
   )
 }
-export default UpdateUserRoleModal
+export default UpdateUserStatusModal

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../components/Shared/LoadingSpinner';
 
-const AllProducts = () => {
+const Products = () => {
 
   const axiosSecure = useAxiosSecure();
 
@@ -38,4 +38,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default Products;

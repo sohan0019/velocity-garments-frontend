@@ -182,7 +182,7 @@ const UpdateProductForm = ({ product, onUpdate }) => {
               <label className='block text-gray-600 font-semibold'>Payment Options</label>
               <select className='w-full px-4 py-3 border border-lime-300 rounded-md bg-white' {...register('paymentMethod', { required: true })}>
                 <option value='Cash on Delivery'>Cash on Delivery</option>
-                <option value='PayFirst'>PayFirst</option>
+                <option value='Stripe'>Stripe</option>
               </select>
             </div>
 

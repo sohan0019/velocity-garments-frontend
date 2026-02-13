@@ -26,13 +26,14 @@ const BuyingForm = () => {
       return res.data;
     }
   })
-  const { quantity, moq } = product || {};
+  const { _id, quantity, moq } = product || {};
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors }
   } = useForm();
 
@@ -60,6 +61,10 @@ const BuyingForm = () => {
 
   const onSubmit = async (data, event) => {
     const actionType = event?.nativeEvent?.submitter?.value;
+    if (!product?._id) {
+      toast.error("Product ID missing!");
+      return;
+    }
 
     if (actionType === "cod") {
       console.log("COD Order:", data);
@@ -67,12 +72,17 @@ const BuyingForm = () => {
       try {
         const response = await axiosSecure.post("/orders", {
           ...data,
+          productId: product._id,
+          paymentMethod: product.paymentMethod,
           paymentStatus: "pending",
           managerEmail: managerEmail,
         });
 
+        console.log(response.data);
+
         if (response.data.insertedId) {
           toast.success('Order Successfully Done.');
+          reset();
         }
       } catch (error) {
         const errorMessage = error.response?.data?.message || "Something went wrong!";
@@ -85,7 +95,7 @@ const BuyingForm = () => {
         console.error("Order Error:", error);
       }
     }
-    // else if (actionType === "payfirst")
+    // else if (actionType === "Stripe")
 
   }
 
@@ -141,7 +151,7 @@ const BuyingForm = () => {
                     <label className="label mt-4 text-black">Payment Options</label>
                     <select {...register("paymentMethod")} defaultValue="Choose payment option" className="select mt-2 w-full cursor-not-allowed text-black" disabled>
                       <option value='Cash on Delivery'>Cash on Delivery</option>
-                      <option value='PayFirst'>PayFirst</option>
+                      <option value='Stripe'>Stripe</option>
                     </select>
                   </div>
                 </div>
@@ -224,11 +234,11 @@ const BuyingForm = () => {
                   />
                 )}
 
-                {product?.paymentMethod === 'PayFirst' && (
+                {product?.paymentMethod === 'Stripe' && (
                   <Button
                     type="submit"
-                    value="payfirst"
-                    label="PayFirst"
+                    value="Stripe"
+                    label="Stripe"
                   />
                 )}
               </fieldset>
