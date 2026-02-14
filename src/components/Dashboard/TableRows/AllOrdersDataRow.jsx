@@ -1,12 +1,6 @@
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
+const AllOrdersDataRow = ({ order }) => {
 
-const AllOrdersDataRow = ({ order, refetch }) => {
-
-  const axiosSecure = useAxiosSecure();
-
-  const { _id, buyerEmail, name, orderQuantity, paymentStatus, price, } = order || {};
-
-
+  const { _id, buyerEmail, name, orderQuantity, paymentStatus } = order || {};
 
   return (
     <tr>

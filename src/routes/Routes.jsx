@@ -8,7 +8,7 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import MyInventory from '../pages/Dashboard/Manager/MyInventory'
+import MyInventory from '../pages/Dashboard/Manager/PendingOrders'
 import MyOrders from '../pages/Dashboard/Buyer/MyOrders'
 import { createBrowserRouter } from 'react-router'
 import Products from '../pages/Products/Products'
@@ -18,6 +18,8 @@ import ManageProducts from '../pages/Dashboard/Manager/ManageProducts'
 import ProductDetails from '../pages/ProductDetails/ProductDetails'
 import AllProducts from '../pages/Dashboard/Admin/AllProducts'
 import AllOrders from '../pages/Dashboard/Admin/AllOrders'
+import PendingOrders from '../pages/Dashboard/Manager/PendingOrders'
+import ApprovedOrders from '../pages/Dashboard/Manager/ApprovedOrders'
 
 export const router = createBrowserRouter([
   {
@@ -72,10 +74,18 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-inventory',
+        path: 'pending-orders',
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <PendingOrders />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'approved-orders',
+        element: (
+          <PrivateRoute>
+            <ApprovedOrders />
           </PrivateRoute>
         ),
       },

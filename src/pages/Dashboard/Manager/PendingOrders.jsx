@@ -1,6 +1,25 @@
-import PlantDataRow from '../../../components/Dashboard/TableRows/PlantDataRow'
+import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
+import PendingOrderDataRow from '../../../components/Dashboard/TableRows/PendingOrderDataRow';
 
-const MyInventory = () => {
+const PendingOrders = () => {
+
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const { data: orders = [], isLoading, refetch } = useQuery({
+    queryKey: ['orders', user?.email],
+    queryFn: async () => {
+      const result = await axiosSecure('/pending-orders');
+      return result.data;
+    }
+  })
+  // console.log(orders);
+
+  if (isLoading) return <LoadingSpinner />
+
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8'>
@@ -14,25 +33,19 @@ const MyInventory = () => {
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Image
+                      Order ID
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Name
+                      User
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Category
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Price
+                      Product
                     </th>
                     <th
                       scope='col'
@@ -40,23 +53,31 @@ const MyInventory = () => {
                     >
                       Quantity
                     </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Order Status
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Order Date
+                    </th>
 
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Delete
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Update
+                      Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <PlantDataRow />
+                  {
+                    orders.map(order => <PendingOrderDataRow order={order} key={order?._id} refetch={refetch} />)
+                  }
                 </tbody>
               </table>
             </div>
@@ -67,4 +88,4 @@ const MyInventory = () => {
   )
 }
 
-export default MyInventory
+export default PendingOrders

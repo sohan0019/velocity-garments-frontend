@@ -1,19 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
-import BuyerOrderDataRow from '../../../components/Dashboard/TableRows/BuyerOrderDataRow';
+import ApprovedOrderDataRow from '../../../components/Dashboard/TableRows/ApprovedOrderDataRow';
 
-const MyOrders = () => {
+const ApprovedOrders = () => {
 
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: products = [], isLoading } = useQuery({
-    queryKey: ['[orders]',],
+  const { data: orders = [], isLoading, refetch } = useQuery({
+    queryKey: ['orders', user?.email],
     queryFn: async () => {
-      const result = await axiosSecure('/orders');
+      const result = await axiosSecure('/approved-orders');
       return result.data;
     }
   })
+  // console.log(orders);
 
   if (isLoading) return <LoadingSpinner />
 
@@ -28,50 +31,46 @@ const MyOrders = () => {
                   <tr>
                     <th
                       scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-medium'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
                       Order ID
                     </th>
                     <th
                       scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-medium'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      User
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
                       Product
                     </th>
                     <th
                       scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-medium'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
                       Quantity
                     </th>
                     <th
                       scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-medium'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Status
+                      Approved Date
                     </th>
+
                     <th
                       scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-medium'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Payment
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-medium'
-                    >
-                      Action
+                      Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {
-                    products.map(product => (
-                      <BuyerOrderDataRow
-                      key={product._id}
-                      product={product}
-                      />
-                    ))
+                    orders.map(order => <ApprovedOrderDataRow order={order} key={order?._id} refetch={refetch} />)
                   }
                 </tbody>
               </table>
@@ -83,4 +82,4 @@ const MyOrders = () => {
   )
 }
 
-export default MyOrders
+export default ApprovedOrders
