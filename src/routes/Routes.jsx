@@ -8,7 +8,6 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import MyInventory from '../pages/Dashboard/Manager/PendingOrders'
 import MyOrders from '../pages/Dashboard/Buyer/MyOrders'
 import { createBrowserRouter } from 'react-router'
 import Products from '../pages/Products/Products'
@@ -20,7 +19,9 @@ import AllProducts from '../pages/Dashboard/Admin/AllProducts'
 import AllOrders from '../pages/Dashboard/Admin/AllOrders'
 import PendingOrders from '../pages/Dashboard/Manager/PendingOrders'
 import ApprovedOrders from '../pages/Dashboard/Manager/ApprovedOrders'
-import TrackOrder from '../pages/TrackOrder/TrackOrder'
+import OrderDetails from '../pages/Dashboard/Buyer/OrderDetails'
+import ViewTracking from '../pages/ViewTracking/ViewTracking'
+import TrackOrder from '../pages/Dashboard/Buyer/TrackOrder'
 
 export const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ export const router = createBrowserRouter([
       {
         path: '/product/:id',
         element: <PrivateRoute>
-          <ProductDetails /> 
+          <ProductDetails />
         </PrivateRoute>,
       },
       {
@@ -91,6 +92,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'view-tracking/:trackingId',
+        element: (
+          <PrivateRoute>
+            <ViewTracking />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: 'track-order/:trackingId',
         element: (
           <PrivateRoute>
@@ -135,6 +144,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyOrders />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'order-details/:id',
+        element: (
+          <PrivateRoute>
+            <OrderDetails />
           </PrivateRoute>
         ),
       },

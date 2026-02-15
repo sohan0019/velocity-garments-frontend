@@ -3,6 +3,7 @@ import DeleteModal from '../../Modal/DeleteModal'
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router';
 const BuyerOrderDataRow = ({ product }) => {
 
   const { _id, productId, name, orderQuantity, orderStatus, paymentMethod } = product || {};
@@ -57,15 +58,16 @@ const BuyerOrderDataRow = ({ product }) => {
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <div className='flex items-center gap-2'>
           <div>
-            <button
-              className='relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-black leading-tight'
+            <Link
+              to={`/dashboard/order-details/${_id}`}
+              className='relative cursor-pointer inline-block px-3 py-1 font-semibold text-black leading-tight'
             >
               <span
                 aria-hidden='true'
                 className='absolute inset-0 bg-amber-100 border border-orange-500 rounded-full'
               ></span>
               <span className='relative'>View</span>
-            </button>
+            </Link>
 
           </div>
 
@@ -82,7 +84,7 @@ const BuyerOrderDataRow = ({ product }) => {
                   ></span>
                   <span className='relative'>Cancel</span>
                 </button>
-                <DeleteModal isOpen={isOpen} closeModal={closeModal} handleDelete={handleDelete}/>
+                <DeleteModal isOpen={isOpen} closeModal={closeModal} handleDelete={handleDelete} />
               </div>
             )
           }

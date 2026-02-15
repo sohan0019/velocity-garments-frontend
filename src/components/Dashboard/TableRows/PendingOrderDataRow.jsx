@@ -2,20 +2,15 @@ import { useState } from 'react'
 import DeleteModal from '../../Modal/DeleteModal'
 import UpdatePlantModal from '../../Modal/UpdateProductModal'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
+import { Link } from 'react-router'
 
 const PendingOrderDataRow = ({ order, refetch }) => {
 
   const axiosSecure = useAxiosSecure();
   const [isViewOpen, setIsViewOpen] = useState(false)
 
-  const { _id, buyerEmail, name, orderQuantity, orderStatus, createdAt, trackingId } = order || {};
+  const { _id, buyerEmail, name, orderQuantity, orderStatus, createdAt, trackingId, productId } = order || {};
 
-  // function openModal() {
-  //   setIsOpen(true)
-  // }
-  // function closeModal() {
-  //   setIsOpen(false)
-  // }
 
   const handleStatusUpdate = async (status) => {
     try {
@@ -64,20 +59,15 @@ const PendingOrderDataRow = ({ order, refetch }) => {
               Reject
             </button>
 
-            <button
-              onClick={() => setIsViewOpen(true)}
-              className='px-3 py-1 bg-green-300 rounded-full'
+            <Link
+              to={productId ? `/product/${productId}` : '#'}
+              className={`px-3 py-1 bg-green-300 rounded-full ${!productId && 'opacity-50 cursor-not-allowed'}`}
             >
               View
-            </button>
+            </Link>
           </div>
         </td>
       </tr>
-      {/* <ViewOrderModal
-        isOpen={isViewOpen}
-        closeModal={() => setIsViewOpen(false)}
-        order={order}
-      /> */}
     </>
   )
 }

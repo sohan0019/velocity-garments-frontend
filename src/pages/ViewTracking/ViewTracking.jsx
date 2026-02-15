@@ -2,18 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
-const TrackOrder = () => {
+const ViewTracking = () => {
   const { trackingId } = useParams();
   const axiosSecure = useAxiosSecure();
 
-  const { data: trackings = [] } = useQuery({
+  const { data: trackings = [], isLoading } = useQuery({
     queryKey: ["tracking", trackingId],
     queryFn: async () => {
       const res = await axiosSecure.get(`/trackings/${trackingId}/logs`);
       return res.data;
     },
   });
+
+  if (isLoading) return <LoadingSpinner />
+
+  const sortedTrackings = [...trackings].reverse();
 
   return (
     <div className="bg-linear-to-b from-gray-50 to-gray-100 min-h-screen">
@@ -32,8 +37,8 @@ const TrackOrder = () => {
           Logs so far: {trackings.length}
         </p>
         <ul className="timeline timeline-vertical py-6 pb-10 px-4">
-          {trackings.map((log, index) => {
-            const isLast = index === trackings.length - 1;
+          {sortedTrackings.map((log, index) => {
+            const isLast = index === 0;
 
             return (
               <li key={log._id}>
@@ -92,4 +97,4 @@ const TrackOrder = () => {
   );
 };
 
-export default TrackOrder;
+export default ViewTracking;
