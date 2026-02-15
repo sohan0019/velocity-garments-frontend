@@ -1,59 +1,81 @@
-import useAuth from '../../../hooks/useAuth'
-import coverImg from '../../../assets/images/cover.jpg'
+import { useParams } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../hooks/useAuth";
+// Optional: install date-fns for easy date formatting
+// import { format } from 'date-fns'; 
 
-const Profile = () => {
-  const { user } = useAuth()
+const UserProfile = () => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const { data: userdata, isLoading, isError } = useQuery({
+    queryKey: ["user", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure(`/user/${user.email}`);
+      return res.data;
+    },
+  });
+
+  if (isLoading) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <span className="loading loading-ring loading-lg text-primary"></span>
+    </div>
+  );
+
+  if (isError || !user) return <div className="text-center mt-10 text-red-500">User not found or error fetching data.</div>;
 
   return (
-    <div className='flex justify-center items-center h-screen'>
-      <div className='bg-white shadow-lg rounded-2xl md:w-4/5 lg:w-3/5'>
-        <img
-          alt='cover photo'
-          src={coverImg}
-          className='w-full mb-4 rounded-t-lg h-56'
-        />
-        <div className='flex flex-col items-center justify-center p-4 -mt-16'>
-          <a href='#' className='relative block'>
+    <div className="flex justify-center items-center min-h-screen bg-slate-50 p-4">
+      <div className="relative bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md overflow-hidden">
+        
+        {/* Decorative Background Element */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-r from-blue-500 to-purple-600"></div>
+
+        <div className="relative flex flex-col items-center mt-8">
+          {/* Profile Image with Border */}
+          <div className="p-1 bg-white rounded-full shadow-lg">
             <img
-              alt='profile'
-              src={user?.photoURL}
-              className='mx-auto object-cover rounded-full h-24 w-24  border-2 border-white '
+              src={userdata.image}
+              alt="profile"
+              className="w-32 h-32 rounded-full object-cover border-4 border-white"
             />
-          </a>
+          </div>
 
-          <p className='p-2 px-4 text-xs text-white bg-lime-500 rounded-full'>
-            Customer
-          </p>
-          <p className='mt-2 text-xl font-medium text-gray-800 '>
-            User Id: {user?.uid}
-          </p>
-          <div className='w-full p-2 mt-4 rounded-lg'>
-            <div className='flex flex-wrap items-center justify-between text-sm text-gray-600 '>
-              <p className='flex flex-col'>
-                Name
-                <span className='font-bold text-gray-600 '>
-                  {user?.displayName}
-                </span>
-              </p>
-              <p className='flex flex-col'>
-                Email
-                <span className='font-bold text-gray-600 '>{user?.email}</span>
-              </p>
+          <h2 className="text-3xl font-extrabold text-gray-800 mt-4">{userdata.name}</h2>
+          <p className="text-blue-600 font-medium">{userdata.email}</p>
+          
+          {/* Badge for Role */}
+          <span className="mt-3 px-4 py-1 rounded-full bg-blue-10 text-blue-700 text-sm font-bold border border-blue-200 uppercase tracking-wider">
+            {userdata.role}
+          </span>
+        </div>
 
-              <div>
-                <button className='bg-lime-500  px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800 block mb-1'>
-                  Update Profile
-                </button>
-                <button className='bg-lime-500 px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800'>
-                  Change Password
-                </button>
-              </div>
-            </div>
+        <div className="mt-8 grid grid-cols-1 gap-4 border-t border-gray-100 pt-6">
+          <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+            <span className="text-gray-500 font-medium">Status</span>
+            <span className={`font-bold ${userdata.status === 'Approve' ? 'text-green-600' : 'text-amber-600'}`}>
+              {userdata.status}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center p-3">
+            <span className="text-gray-500 font-medium">Member Since</span>
+            <span className="text-gray-700 font-semibold">
+              {new Date(userdata.created_at).toLocaleDateString()}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center p-3">
+            <span className="text-gray-500 font-medium">Last Activity</span>
+            <span className="text-gray-700 font-semibold text-right">
+                {new Date(userdata.last_logged_in).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+            </span>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default UserProfile;

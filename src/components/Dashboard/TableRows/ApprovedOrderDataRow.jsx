@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import AddTrackingModal from '../../Modal/AddTrackingModal'
 import { Link } from 'react-router'
+import { format } from 'date-fns'
 
 const ApprovedOrderDataRow = ({ order, refetch }) => {
 
@@ -47,7 +48,7 @@ const ApprovedOrderDataRow = ({ order, refetch }) => {
   return (
     <>
       <tr>
-        <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+        <td className='px-5 py-5 border-b border-gray-200 bg-white text-xs'>
           <p className='text-gray-900 '>{_id}</p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -60,7 +61,7 @@ const ApprovedOrderDataRow = ({ order, refetch }) => {
           <p className='text-gray-900 '>{orderQuantity}</p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-          <p className='text-gray-900 '>{createdAt}</p>
+          <p className='text-gray-900 '>{createdAt && format(new Date(createdAt), 'dd/MM/yyyy')}</p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <p className='text-gray-900'>
