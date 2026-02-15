@@ -20,6 +20,7 @@ import AllProducts from '../pages/Dashboard/Admin/AllProducts'
 import AllOrders from '../pages/Dashboard/Admin/AllOrders'
 import PendingOrders from '../pages/Dashboard/Manager/PendingOrders'
 import ApprovedOrders from '../pages/Dashboard/Manager/ApprovedOrders'
+import TrackOrder from '../pages/TrackOrder/TrackOrder'
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +87,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ApprovedOrders />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'track-order/:trackingId',
+        element: (
+          <PrivateRoute>
+            <TrackOrder />
           </PrivateRoute>
         ),
       },

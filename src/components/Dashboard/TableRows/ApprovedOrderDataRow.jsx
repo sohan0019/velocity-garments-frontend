@@ -5,13 +5,14 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import AddTrackingModal from '../../Modal/AddTrackingModal'
+import { Link } from 'react-router'
 
 const ApprovedOrderDataRow = ({ order, refetch }) => {
 
   const axiosSecure = useAxiosSecure();
   const [isViewOpen, setIsViewOpen] = useState(false)
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
-  const { _id, buyerEmail, name, orderQuantity, orderStatus, createdAt, trackingId } = order || {};
+  const { _id, buyerEmail, name, orderQuantity, createdAt, trackingId, latestTracking } = order || {};
 
   // Mutation for adding tracking
   const { mutateAsync } = useMutation({
@@ -33,15 +34,15 @@ const ApprovedOrderDataRow = ({ order, refetch }) => {
       trackingId,
       status: form.status.value,
       location: form.location.value,
-      note: form.note.value,
     };
-    
+
     try {
       await mutateAsync(trackingInfo);
     } catch (err) {
       toast.error(err.message);
     }
-  ;}
+    ;
+  }
 
   return (
     <>
@@ -61,7 +62,20 @@ const ApprovedOrderDataRow = ({ order, refetch }) => {
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <p className='text-gray-900 '>{createdAt}</p>
         </td>
-
+        <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+          <p className='text-gray-900'>
+            {/* If a tracking status exists, show it; otherwise show 'Processing' */}
+            {latestTracking?.status ? (
+              <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">
+                {latestTracking.status}
+              </span>
+            ) : (
+              <span className="px-2 py-1 font-semibold leading-tight text-gray-700 bg-gray-100 rounded-full">
+                Pending Update
+              </span>
+            )}
+          </p>
+        </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <div className='flex items-center gap-2'>
             <button
@@ -71,21 +85,23 @@ const ApprovedOrderDataRow = ({ order, refetch }) => {
               Add Tracking
             </button>
 
-            <button
+            <Link 
+              to={`/dashboard/track-order/${trackingId}`}
               onClick={() => setIsViewOpen(true)}
               className='bg-green-500 text-white px-3 py-1 rounded'
             >
               View Tracking
-            </button>
+            </Link>
           </div>
         </td>
       </tr>
 
-      <AddTrackingModal 
-        isOpen={isTrackingOpen} 
-        closeModal={() => setIsTrackingOpen(false)} 
+      <AddTrackingModal
+        isOpen={isTrackingOpen}
+        closeModal={() => setIsTrackingOpen(false)}
         trackingId={trackingId}
         handleUpdate={handleTrackingUpdate}
+        currentStatus={latestTracking?.status}
       />
     </>
   )
