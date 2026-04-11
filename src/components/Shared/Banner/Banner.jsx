@@ -15,7 +15,7 @@ const Banner = () => {
       <Container>
         <Carousel autoPlay={true} infiniteLoop={true}>
           {[image1, image2, image3, image4].map((img, index) => (
-            <div key={index} className="relative h-[500px] md:h-[600px]">
+            <div key={index} className="relative h-125 md:h-150">
 
               {/* Image */}
               <img
@@ -41,10 +41,6 @@ const Banner = () => {
                 <div className='flex flex-col sm:flex-row w-fit mt-6'>
                   <button className="btn bg-amber-200 border-2 border-black text-xl font-bold text-black px-6 py-4 rounded-2xl hover:bg-white">
                     <Link to="/">View All Products</Link>
-                  </button>
-
-                  <button className="btn btn-neutral btn-outline text-xl font-bold bg-secondary text-white px-6 py-4 ml-0 sm:ml-4 mt-3 sm:mt-0 rounded-2xl border-2 hover:bg-white hover:text-black">
-                    <Link to="/">Be A Seller</Link>
                   </button>
                 </div>
               </div>

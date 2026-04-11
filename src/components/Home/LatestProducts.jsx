@@ -20,7 +20,7 @@ const LatestProducts = () => {
 
   return (
     <Container>
-      <h2 className='text-5xl font-semibold text-center mt-8'>Our Products</h2>
+      <h2 className='text-5xl font-semibold text-center mt-8'>Feature Products</h2>
       {
         products && products.length > 0 ? (
           <div className='py-12 mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>

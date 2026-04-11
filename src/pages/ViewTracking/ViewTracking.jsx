@@ -21,7 +21,7 @@ const ViewTracking = () => {
   const sortedTrackings = [...trackings].reverse();
 
   return (
-    <div className="bg-linear-to-b from-gray-50 to-gray-100 min-h-screen">
+    <div className="bg-linear-to-b from-gray-50 to-gray-100 h-[calc(100vh-40px)]">
       {/* Header */}
       <div className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-bold p-8 pb-2 text-gray-800">

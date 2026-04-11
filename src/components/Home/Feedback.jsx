@@ -13,7 +13,29 @@ const Feedback = () => {
       <Container>
         <h2 className='text-4xl font-semibold mt-20 text-center'>Customer Feedback</h2>
         <div className='my-20 mb-30'>
-          <Swiper slidesPerView={4}
+          <Swiper 
+            breakpoints={{
+              // mobile (default)
+              320: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+              // tablet
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              // desktop
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+              },
+              // large screens
+              1280: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+              },
+            }}
             centeredSlides={true}
             spaceBetween={30}
             grabCursor={true}
@@ -25,7 +47,7 @@ const Feedback = () => {
             modules={[Autoplay]}
             className="mySwiper">
             <SwiperSlide>
-              <div className='bg-orange-200 py-8 px-4 rounded-3xl border'>
+              <div className='bg-orange-200 py-8 px-4 rounded-3xl border '>
                 <span className='flex mx-auto bg-linear-to-b from-[#EFEEFC] to-white w-fit rounded-full'>
                   <img className='p-2 w-16 h-16' src="https://img.icons8.com/?size=80&id=GImnXL4RRlTA&format=png" alt="" />
                 </span>
@@ -43,7 +65,7 @@ const Feedback = () => {
             </SwiperSlide>
 
             <SwiperSlide>
-              <div className='bg-amber-100 py-8 px-4 rounded-3xl border'>
+              <div className='bg-amber-100 py-8 px-4 rounded-3xl border '>
                 <span className='flex mx-auto bg-linear-to-b from-[#EFEEFC] to-white w-fit rounded-full'>
                   <img className='p-2 w-16 h-16' src="https://img.icons8.com/?size=80&id=GImnXL4RRlTA&format=png" alt="" />
                 </span>
@@ -61,7 +83,7 @@ const Feedback = () => {
             </SwiperSlide>
 
             <SwiperSlide>
-              <div className='bg-amber-50 py-8 px-4 rounded-3xl border'>
+              <div className='bg-amber-50 py-8 px-4 rounded-3xl border '>
                 <span className='flex mx-auto bg-linear-to-b from-[#EFEEFC] to-white w-fit rounded-full'>
                   <img className='p-2 w-16 h-16' src="https://img.icons8.com/?size=80&id=GImnXL4RRlTA&format=png" alt="" />
                 </span>
@@ -79,7 +101,7 @@ const Feedback = () => {
             </SwiperSlide>
 
             <SwiperSlide>
-              <div className='bg-amber-100 py-8 px-4 rounded-3xl border'>
+              <div className='bg-amber-100 py-8 px-4 rounded-3xl border '>
                 <span className='flex mx-auto bg-linear-to-b from-[#EFEEFC] to-white w-fit rounded-full'>
                   <img className='p-2 w-16 h-16' src="https://img.icons8.com/?size=80&id=GImnXL4RRlTA&format=png" alt="" />
                 </span>

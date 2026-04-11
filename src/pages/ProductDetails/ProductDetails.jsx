@@ -6,12 +6,23 @@ import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../hooks/useAxiosSecure'
 import LoadingSpinner from '../../components/Shared/LoadingSpinner'
 import useRole from '../../hooks/useRole'
+import useAuth from '../../hooks/useAuth'
 
 const ProductDetails = () => {
 
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-  const {role, isRoleLoading} = useRole();
+  const { role, isRoleLoading } = useRole();
+  const { user } = useAuth();
+
+  const { data: dbUser = {}, isLoading: isUserLoading } = useQuery({
+    queryKey: ['user', user?.email],
+    enabled: !!user?.email, // Only run this query if user email exists
+    queryFn: async () => {
+      const { data } = await axiosSecure(`/user/${user?.email}`);
+      return data;
+    }
+  });
 
   const { data: product = [], isLoading } = useQuery({
     queryKey: ['product', id],
@@ -24,10 +35,9 @@ const ProductDetails = () => {
   const { _id, name, images, quantity, moq, price, category, description, paymentMethod } = product || {};
   const image = images && images.length > 0 ? images[0] : null;
 
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>
-  if (isRoleLoading) return <LoadingSpinner />;
+  if (isLoading || isRoleLoading || isUserLoading) return <LoadingSpinner></LoadingSpinner>;
 
-  const isActionDisabled = role === 'Admin' || role === 'Manager';
+  const isActionDisabled = role === 'Admin' || role === 'Manager' || dbUser?.status === 'Suspend' || dbUser?.status === 'Pending';
 
   return (
     <Container>
@@ -91,18 +101,21 @@ const ProductDetails = () => {
             </p>
           </div>
           <hr className='my-6' />
-          <div className='flex justify-between'>
+          <div className='flex justify-between items-center'>
             <p className='font-bold text-3xl text-purple-800'>Price: {price}</p>
-            <Link
-              to={isActionDisabled ? '#' : `/buying-form/${_id}`}
-              state={{ managerEmail: product?.manager?.email }}
-              className={isActionDisabled ? 'cursor-not-allowed' : ''}
-            >
-              <Button
-                disabled={isActionDisabled}
-                label={isActionDisabled ? 'Order Now' : 'Order Now'}
-              />
-            </Link>
+
+            <div title={dbUser?.status === 'Suspend' ? `Reason: ${dbUser?.reason}` : ''}>
+              <Link
+                to={isActionDisabled ? '#' : `/buying-form/${_id}`}
+                state={{ managerEmail: product?.manager?.email }}
+                className={isActionDisabled ? 'cursor-not-allowed' : ''}
+              >
+                <Button
+                  disabled={isActionDisabled}
+                  label={dbUser?.status === 'Suspend' ? 'Suspended' : dbUser?.status === 'Pending' ? 'Pending' : 'Order Now'}
+                />
+              </Link>
+            </div>
           </div>
 
         </div>

@@ -4,7 +4,6 @@ import UpdatePlantModal from '../../Modal/UpdateProductModal'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
-import AddTrackingModal from '../../Modal/AddTrackingModal'
 import { Link } from 'react-router'
 
 const TrackOrderDataRow = ({ order, refetch }) => {
@@ -12,7 +11,7 @@ const TrackOrderDataRow = ({ order, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const [isViewOpen, setIsViewOpen] = useState(false)
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
-  const { _id, trackingId, name, orderQuantity, price, latestTracking } = order || {};
+  const { _id, trackingId, name, orderQuantity, price, paymentStatus } = order || {};
 
   // Mutation for adding tracking
   const { mutateAsync } = useMutation({
@@ -53,18 +52,17 @@ const TrackOrderDataRow = ({ order, refetch }) => {
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <p className='text-gray-900 '>{name}</p>
         </td>
-        <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-          <p className='text-gray-900 '>{name}</p>
-        </td>
+        
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <p className='text-gray-900 '>{orderQuantity}</p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <p className='text-gray-900 '>{price}</p>
         </td>
-
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-
+          <p className='text-gray-900 '>{paymentStatus}</p>
+        </td>
+        <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm min-w-38'>
           <Link
             to={`/dashboard/view-tracking/${trackingId}`}
             onClick={() => setIsViewOpen(true)}

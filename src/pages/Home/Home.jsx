@@ -1,6 +1,5 @@
 import Feedback from '../../components/Home/Feedback'
 import LatestProducts from '../../components/Home/LatestProducts'
-import Plants from '../../components/Home/Plants'
 import Works from '../../components/Home/Works'
 import Banner from '../../components/Shared/Banner/Banner'
 import Container from '../../components/Shared/Container'

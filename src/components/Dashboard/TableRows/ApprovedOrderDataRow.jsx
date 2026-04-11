@@ -81,7 +81,7 @@ const ApprovedOrderDataRow = ({ order, refetch }) => {
           <div className='flex items-center gap-2'>
             <button
               onClick={() => setIsTrackingOpen(true)}
-              className='bg-blue-500 text-white px-3 py-1 rounded'
+              className='bg-blue-500 text-white px-3 py-1 rounded cursor-pointer'
             >
               Add Tracking
             </button>

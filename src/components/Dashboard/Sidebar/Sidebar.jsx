@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import useAuth from '../../../hooks/useAuth'
 import logo from '../../../assets/images/Logo.png'
+import { useQueryClient } from '@tanstack/react-query';
 // Icons
 import { GrLogout } from 'react-icons/gr'
 import { FcSettings } from 'react-icons/fc'
@@ -21,10 +22,18 @@ const Sidebar = () => {
   const [isActive, setActive] = useState(false)
   const {role, isRoleLoading} = useRole();
 
+  const queryClient = useQueryClient();
+
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive)
   }
+
+  const handleLogOut = async () => {
+    await logOut();           // 1. Firebase logout
+    queryClient.clear();      // 2. Wipe ALL cached queries (orders, products, roles)
+    window.location.reload(); // 3. Optional: Forces a clean state refresh
+  };
 
   if (isRoleLoading) return <LoadingSpinner />
 
@@ -92,8 +101,8 @@ const Sidebar = () => {
               address='/dashboard/profile'
             />
             <button
-              onClick={logOut}
-              className='flex cursor-pointer w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform'
+              onClick={handleLogOut}
+              className='flex cursor-pointer w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300 hover:text-gray-700 transition-colors duration-300 transform'
             >
               <GrLogout className='w-5 h-5' />
 

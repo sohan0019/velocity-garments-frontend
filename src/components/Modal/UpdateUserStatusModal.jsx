@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 
 const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
   const [updatedStatus, setUpdatedStatus] = useState(user?.status)
+  // 1. Add state to capture the reason
+  const [suspendReason, setSuspendReason] = useState('')
 
   const axiosSecure = useAxiosSecure();
 
@@ -13,6 +15,8 @@ const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
       await axiosSecure.patch('/update-status', {
         email: user?.email,
         status: updatedStatus,
+        // 2. Include the reason in your API call
+        reason: updatedStatus === 'Suspend' ? suspendReason : '',
       })
       toast.success('Status updated!')
       refetch();
@@ -21,7 +25,7 @@ const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
       console.log(err);
       toast.error(err?.response?.data?.message);
     }
-    finally{
+    finally {
       closeModal();
     }
   }
@@ -38,7 +42,7 @@ const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
           <div className='flex min-h-full items-center justify-center p-4'>
             <DialogPanel
               transition
-              className='w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl'
+              className='w-full max-w-md rounded-xl bg-white p-6 duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl border border-gray-100'
             >
               <DialogTitle
                 as='h3'
@@ -51,25 +55,42 @@ const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
                   <select
                     value={updatedStatus}
                     onChange={e => setUpdatedStatus(e.target.value)}
-                    className='w-full my-3 border border-gray-200 rounded-xl px-2 py-3'
+                    className='w-full my-3 border border-gray-200 rounded-xl px-2 py-3 focus:outline-none focus:ring-2 focus:ring-green-500'
                     name='status'
-                    id=''
                   >
                     <option value='Approve'>Approve</option>
                     <option value='Suspend'>Suspend</option>
                   </select>
                 </div>
+
+                {/* 3. Conditional Rendering Logic */}
+                {updatedStatus === 'Suspend' && (
+                  <div className='mb-4'>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                      Reason for Suspension
+                    </label>
+                    <textarea
+                      required
+                      value={suspendReason}
+                      onChange={(e) => setSuspendReason(e.target.value)}
+                      placeholder='Briefly explain why...'
+                      className='w-full border border-gray-200 rounded-xl px-2 py-3 focus:outline-none focus:ring-2 focus:ring-red-500'
+                      rows='3'
+                    />
+                  </div>
+                )}
+
                 <div className='flex mt-2 justify-around'>
                   <button
                     type='button'
                     onClick={handleStatusUpdate}
-                    className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
+                    className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none'
                   >
                     Update
                   </button>
                   <button
                     type='button'
-                    className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2'
+                    className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none'
                     onClick={closeModal}
                   >
                     Cancel
@@ -83,4 +104,5 @@ const UpdateUserStatusModal = ({ isOpen, closeModal, user, refetch }) => {
     </>
   )
 }
+
 export default UpdateUserStatusModal

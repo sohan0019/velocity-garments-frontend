@@ -4,22 +4,25 @@ import { FaUserGear } from "react-icons/fa6";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAuth from '../../../hooks/useAuth';
 
-const AdminStatistics = () => {
+const ManagerStatistics = () => {
 
+  const { user } = useAuth();
   const [stats, setStats] = useState({
-    products: 0,
-    orders: 0,
-    buyers: 0,
-    managers: 0
+    totalProducts: 0,
+    totalOrders: 0,
+    approvedOrders: 0,
+    pendingOrders: 0
   });
   const [loading, setLoading] = useState(true);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
+    if (!user?.email) return;
     const fetchStats = async () => {
       try {
-        const response = await axiosSecure.get('/admin-stats');
+        const response = await axiosSecure.get(`/manager-stats?email=${user.email}`);
         setStats(response.data);
       } catch (error) {
         console.error("Error fetching stats:", error);
@@ -28,9 +31,9 @@ const AdminStatistics = () => {
       }
     };
     fetchStats();
-  }, [axiosSecure]);
+  }, [axiosSecure, user]);
 
-  const { products, orders, buyers, managers } = stats;
+  const { totalProducts, totalOrders, approvedOrders, pendingOrders } = stats;
 
   return (
     <div>
@@ -42,7 +45,7 @@ const AdminStatistics = () => {
           <div className="flex items-center justify-between rounded-lg bg-[#e7ac02] p-4 text-white shadow">
             <div>
               <h3 className="font-medium">Total Products</h3>
-              <h4 className="font-bold">{products}</h4>
+              <h4 className="font-bold">{totalProducts}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-[#e7ac02]">
               <BsBoxSeamFill size={20} />
@@ -52,7 +55,7 @@ const AdminStatistics = () => {
           <div className="flex items-center justify-between rounded-lg bg-[#1e285a] p-4 text-white shadow">
             <div>
               <h3 className="font-medium">Total Orders</h3>
-              <h4 className="font-bold">{orders}</h4>
+              <h4 className="font-bold">{totalOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-[#1e285a]">
               <BsFillCartPlusFill size={20} />
@@ -61,8 +64,8 @@ const AdminStatistics = () => {
 
           <div className="flex items-center justify-between rounded-lg bg-green-500 p-4 text-white shadow">
             <div>
-              <h3 className="font-medium">Total Buyers</h3>
-              <h4 className="font-bold">{buyers}</h4>
+              <h3 className="font-medium">Approved Orders</h3>
+              <h4 className="font-bold">{approvedOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-green-500">
               <FaUserAlt size={20} />
@@ -71,8 +74,8 @@ const AdminStatistics = () => {
 
           <div className="flex items-center justify-between rounded-lg bg-blue-500 p-4 text-white shadow">
             <div>
-              <h3 className="font-medium">Total Managers</h3>
-              <h4 className="font-bold">{managers}</h4>
+              <h3 className="font-medium">Pending Orders</h3>
+              <h4 className="font-bold">{pendingOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-blue-500">
               <FaUserGear size={20} />
@@ -95,4 +98,4 @@ const AdminStatistics = () => {
   )
 }
 
-export default AdminStatistics
+export default ManagerStatistics

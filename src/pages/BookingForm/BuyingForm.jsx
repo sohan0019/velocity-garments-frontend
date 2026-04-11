@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import Container from '../../components/Shared/Container';
 import bookingImg from '../../assets//images/BookingImage.png'
 import Button from '../../components/Shared/Button/Button';
-import { useLocation, useParams } from 'react-router';
+import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../components/Shared/LoadingSpinner';
@@ -16,6 +16,7 @@ const BuyingForm = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const managerEmail = location.state?.managerEmail;
 
@@ -66,6 +67,11 @@ const BuyingForm = () => {
       return;
     }
 
+    if (actionType === "stripe" && data.orderPrice > 999999) {
+      toast.error("Stripe payments cannot exceed 999,999 BDT. Please reduce quantity or contact support.");
+      return;
+    }
+
     if (actionType === "cod") {
       console.log("COD Order:", data);
 
@@ -74,7 +80,7 @@ const BuyingForm = () => {
           ...data,
           productId: product._id,
           paymentMethod: product.paymentMethod,
-          paymentStatus: "pending",
+          paymentStatus: "cod",
           managerEmail: managerEmail,
         });
 
@@ -83,6 +89,7 @@ const BuyingForm = () => {
         if (response.data.insertedId) {
           toast.success('Order Successfully Done.');
           reset();
+          navigate('/');
         }
       } catch (error) {
         const errorMessage = error.response?.data?.message || "Something went wrong!";
@@ -95,9 +102,29 @@ const BuyingForm = () => {
         console.error("Order Error:", error);
       }
     }
-    // else if (actionType === "Stripe")
+    else if (actionType === "stripe") {
+      console.log("Stripe Order:", data);
 
+      const paymentInfo = {
+        ...data,
+        productId: product._id,
+        paymentMethod: product.paymentMethod,
+        paymentStatus: "paid",
+        managerEmail: managerEmail,
+      };
+
+      try {
+        const { data: responseData } = await axiosSecure.post(
+          "/create-checkout-session",
+          paymentInfo
+        );
+        window.location.href = responseData.url;
+      } catch {
+        toast.error("Could not initiate Stripe payment.");
+      }
+    }
   }
+
 
   if (isLoading) return <LoadingSpinner />
 
@@ -237,8 +264,8 @@ const BuyingForm = () => {
                 {product?.paymentMethod === 'Stripe' && (
                   <Button
                     type="submit"
-                    value="Stripe"
-                    label="Stripe"
+                    value="stripe"
+                    label="Pay with Stripe"
                   />
                 )}
               </fieldset>

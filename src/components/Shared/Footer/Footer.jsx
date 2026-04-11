@@ -22,7 +22,7 @@ const Footer = () => {
               <h6 className="footer-title">Links</h6>
               <div className="grid grid-flow-row gap-4">
                 <NavLink to="/">Home</NavLink>
-                <NavLink to="/">All Products</NavLink>
+                <NavLink to="/products">All Products</NavLink>
                 <NavLink to="/">About Us</NavLink>
                 <NavLink to="/">Contact</NavLink>
               </div>

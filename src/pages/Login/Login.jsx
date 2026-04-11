@@ -6,33 +6,55 @@ import { FcGoogle } from 'react-icons/fc'
 import { TbFidgetSpinner } from 'react-icons/tb'
 import { useForm } from 'react-hook-form'
 import { saveOrUpdateUser } from '../../Utils'
+import useRole from '../../hooks/useRole'
+import { useEffect } from 'react'
 
 const Login = () => {
   const { signIn, signInWithGoogle, loading, user, setLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const from = location.state || '/'
+
+  const { role, isLoading: isRoleLoading } = useRole();
+  const from = location.state?.pathname || '/';
+  
+  useEffect(() => {
+    if (user && role && !isRoleLoading) {
+      // Determine target based on role
+      const getDashboardPath = (role) => {
+        if (role === 'Admin') return '/dashboard/admin-home';
+        if (role === 'Manager') return '/dashboard/all-orders';
+        return '/dashboard/my-orders';
+      };
+
+      // If there is a "from" state, check if it's safe, otherwise use role default
+      const target = (from !== '/') ? from : getDashboardPath(role);
+
+      navigate(target, { replace: true });
+    }
+  }, [user, role, isRoleLoading, navigate, from]);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   if (loading) return <LoadingSpinner />
   if (user) return <Navigate to={from} replace={true} />
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
     const { email, password } = data;
-
+    setLoading(true);
     try {
       const { user } = await signIn(email, password);
 
       await saveOrUpdateUser({
-        name: user?.displayName, 
-        email: user?.email, 
-        image: user.photoURL, 
+        name: user?.displayName,
+        email: user?.email,
+        image: user.photoURL,
       })
 
       navigate(from, { replace: true })
@@ -40,6 +62,8 @@ const Login = () => {
     } catch (err) {
       console.log(err)
       toast.error(err?.message)
+      setLoading(false)
+      reset();
     }
   }
 
@@ -47,7 +71,7 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       const { user } = await signInWithGoogle();
-      await saveOrUpdateUser ({
+      await saveOrUpdateUser({
         name: user?.displayName,
         email: user?.email,
         image: user.photoURL,
@@ -57,9 +81,9 @@ const Login = () => {
       navigate(from, { replace: true })
       toast.success('Login Successful')
     } catch (err) {
-      console.log(err)
-      setLoading(false)
-      toast.error(err?.message)
+      console.error(err); // Log the error
+      toast.error(err?.message || "An unexpected error occurred"); // Display the toast
+      setLoading(false);
     }
   }
   return (
@@ -73,8 +97,7 @@ const Login = () => {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          noValidate=''
-          action=''
+          noValidate
           className='space-y-6 ng-untouched ng-pristine ng-valid'
         >
           <div className='space-y-4'>

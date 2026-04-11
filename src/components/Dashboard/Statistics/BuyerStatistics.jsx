@@ -1,25 +1,30 @@
 import { FaUserAlt, FaDollarSign } from 'react-icons/fa'
 import { BsBoxSeamFill, BsFillCartPlusFill } from 'react-icons/bs'
+import { LuClipboardCheck, LuClipboardX, LuTruck  } from "react-icons/lu";
 import { FaUserGear } from "react-icons/fa6";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAuth from '../../../hooks/useAuth';
 
-const AdminStatistics = () => {
+const BuyerStatistics = () => {
 
+  const { user } = useAuth();
   const [stats, setStats] = useState({
-    products: 0,
-    orders: 0,
-    buyers: 0,
-    managers: 0
+    totalApprovedOrders: 0,
+    totalPendingOrders: 0,
+    totalRejectedOrders: 0,
+    paidOrders: 0,
+    codOrders: 0,
   });
   const [loading, setLoading] = useState(true);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
+    if (!user?.email) return;
     const fetchStats = async () => {
       try {
-        const response = await axiosSecure.get('/admin-stats');
+        const response = await axiosSecure.get(`/buyer-stats?email=${user.email}`);
         setStats(response.data);
       } catch (error) {
         console.error("Error fetching stats:", error);
@@ -28,9 +33,9 @@ const AdminStatistics = () => {
       }
     };
     fetchStats();
-  }, [axiosSecure]);
+  }, [axiosSecure, user]);
 
-  const { products, orders, buyers, managers } = stats;
+  const { totalApprovedOrders, totalPendingOrders, totalRejectedOrders, paidOrders, codOrders } = stats;
 
   return (
     <div>
@@ -41,41 +46,51 @@ const AdminStatistics = () => {
 
           <div className="flex items-center justify-between rounded-lg bg-[#e7ac02] p-4 text-white shadow">
             <div>
-              <h3 className="font-medium">Total Products</h3>
-              <h4 className="font-bold">{products}</h4>
+              <h3 className="font-medium">Total Approved Orders</h3>
+              <h4 className="font-bold">{totalApprovedOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-[#e7ac02]">
-              <BsBoxSeamFill size={20} />
+              <LuClipboardCheck size={20} />
             </div>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-[#1e285a] p-4 text-white shadow">
             <div>
-              <h3 className="font-medium">Total Orders</h3>
-              <h4 className="font-bold">{orders}</h4>
+              <h3 className="font-medium">Total Pending Orders</h3>
+              <h4 className="font-bold">{totalPendingOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-[#1e285a]">
-              <BsFillCartPlusFill size={20} />
+              <LuClipboardX size={20} />
             </div>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-green-500 p-4 text-white shadow">
-            <div>
-              <h3 className="font-medium">Total Buyers</h3>
-              <h4 className="font-bold">{buyers}</h4>
+            <div> 
+              <h3 className="font-medium">Total Rejected Orders</h3>
+              <h4 className="font-bold">{totalRejectedOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-green-500">
-              <FaUserAlt size={20} />
+              <BsBoxSeamFill size={20} />
             </div>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-blue-500 p-4 text-white shadow">
             <div>
-              <h3 className="font-medium">Total Managers</h3>
-              <h4 className="font-bold">{managers}</h4>
+              <h3 className="font-medium">Paid Orders</h3>
+              <h4 className="font-bold">{paidOrders}</h4>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-blue-500">
-              <FaUserGear size={20} />
+              <LuTruck size={20} />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between rounded-lg bg-blue-500 p-4 text-white shadow">
+            <div>
+              <h3 className="font-medium">COD Orders</h3>
+              <h4 className="font-bold">{codOrders}</h4>
+            </div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-blue-500">
+              <LuTruck size={20} />
             </div>
           </div>
         </div>
@@ -95,4 +110,4 @@ const AdminStatistics = () => {
   )
 }
 
-export default AdminStatistics
+export default BuyerStatistics

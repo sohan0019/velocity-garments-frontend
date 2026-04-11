@@ -22,6 +22,7 @@ import ApprovedOrders from '../pages/Dashboard/Manager/ApprovedOrders'
 import OrderDetails from '../pages/Dashboard/Buyer/OrderDetails'
 import ViewTracking from '../pages/ViewTracking/ViewTracking'
 import TrackOrder from '../pages/Dashboard/Buyer/TrackOrder'
+import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: '/buying-form/:id',
         element: <BuyingForm />,
+      },
+      {
+        path: '/payment-success',
+        element: <PaymentSuccess />,
       },
     ],
   },

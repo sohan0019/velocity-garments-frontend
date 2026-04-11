@@ -62,22 +62,22 @@ const Navbar = () => {
 
                     {user ? (
                       <>
-                        <Link to="/dashboard" className="px-4 py-3 hover:bg-neutral-100">
+                        <Link to="/dashboard" className="px-4 py-3 hover:bg-neutral-200 rounded-t-xl">
                           Dashboard
                         </Link>
                         <button
                           onClick={logOut}
-                          className="text-left px-4 py-3 hover:bg-neutral-100"
+                          className="text-left px-4 py-3 hover:bg-neutral-200 cursor-pointer rounded-b-xl"
                         >
                           Logout
                         </button>
                       </>
                     ) : (
                       <>
-                        <Link to="/login" className="px-4 py-3 hover:bg-neutral-100">
+                        <Link to="/login" className="px-4 py-3 hover:bg-neutral-200 rounded-t-xl">
                           Login
                         </Link>
-                        <Link to="/signup" className="px-4 py-3 hover:bg-neutral-100">
+                        <Link to="/signup" className="px-4 py-3 hover:bg-neutral-200 rounded-b-xl">
                           Sign Up
                         </Link>
                       </>
