@@ -40,6 +40,8 @@ const ManageProducts = () => {
 
   if (isLoading) return <LoadingSpinner />;
 
+  scrollTo(0,0);
+
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8'>

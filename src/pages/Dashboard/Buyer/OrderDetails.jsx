@@ -26,6 +26,8 @@ const OrderDetails = () => {
 
   if (orderLoading || logsLoading) return <LoadingSpinner />;
 
+  scrollTo(0,0);
+
   return (
     <div className="p-4 md:p-8 bg-white rounded-lg shadow-md max-w-6xl mx-auto h-full overflow-hidden">
       <h2 className="text-2xl font-bold mb-8 border-b pb-2">Order Details</h2>

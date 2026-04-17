@@ -38,6 +38,8 @@ const AllOrders = () => {
 
   if (isLoading) return <LoadingSpinner />;
 
+  scrollTo(0,0);
+
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8 bg-gray-100 h-[calc(100vh-40px)]'>

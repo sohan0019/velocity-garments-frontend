@@ -1,10 +1,11 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import image1 from "../../../assets/images/img1.webp"
-import image2 from "../../../assets/images/img2.jpg"
-import image3 from "../../../assets/images/img3.jpg"
-import image4 from "../../../assets/images/img4.avif"
+import image1 from "../../../assets/images/img4.avif"
+import image2 from "../../../assets/images/img6.webp"
+import image3 from "../../../assets/images/img2.jpg"
+import image4 from "../../../assets/images/img3.jpg"
+import image5 from "../../../assets/images/img1.webp"
 import { BsArrowUpRightCircleFill } from 'react-icons/bs';
 import Container from '../Container';
 import { Link } from 'react-router';
@@ -14,7 +15,7 @@ const Banner = () => {
     <section className='pb-6'>
       <Container>
         <Carousel autoPlay={true} infiniteLoop={true}>
-          {[image1, image2, image3, image4].map((img, index) => (
+          {[image1, image2, image3, image4, image5].map((img, index) => (
             <div key={index} className="relative h-125 md:h-150">
 
               {/* Image */}
@@ -40,7 +41,7 @@ const Banner = () => {
 
                 <div className='flex flex-col sm:flex-row w-fit mt-6'>
                   <button className="btn bg-amber-200 border-2 border-black text-xl font-bold text-black px-6 py-4 rounded-2xl hover:bg-white">
-                    <Link to="/">View All Products</Link>
+                    <Link to="/products">View All Products</Link>
                   </button>
                 </div>
               </div>

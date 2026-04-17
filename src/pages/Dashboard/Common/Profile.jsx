@@ -24,6 +24,8 @@ const UserProfile = () => {
 
   if (isError || !user) return <div className="text-center mt-10 text-red-500">User not found.</div>;
 
+  scrollTo(0,0);
+
   return (
     <div className="flex justify-center items-center h-[calc(100vh-40px)] bg-slate-50 p-4">
       <div className="relative bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md overflow-hidden">

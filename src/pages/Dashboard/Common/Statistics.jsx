@@ -7,8 +7,10 @@ const Statistics = () => {
 
   const {role, isRoleLoading} = useRole();
 
-
   if(isRoleLoading) return <LoadingSpinner />
+
+  scrollTo(0,0);
+
   return (
     <div>
       {role === "Admin" && <AdminStatistics />}

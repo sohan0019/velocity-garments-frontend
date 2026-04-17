@@ -5,7 +5,7 @@ import logo from '../../../assets/images/Logo.png'
 import { useQueryClient } from '@tanstack/react-query';
 // Icons
 import { GrLogout } from 'react-icons/gr'
-import { FcSettings } from 'react-icons/fc'
+import { CgProfile } from "react-icons/cg";
 import { AiOutlineBars } from 'react-icons/ai'
 import { BsGraphUp } from 'react-icons/bs'
 
@@ -96,7 +96,7 @@ const Sidebar = () => {
             <hr />
 
             <MenuItem
-              icon={FcSettings}
+              icon={CgProfile}
               label='Profile'
               address='/dashboard/profile'
             />

@@ -73,7 +73,7 @@ const BuyingForm = () => {
     }
 
     if (actionType === "cod") {
-      console.log("COD Order:", data);
+      //console.log("COD Order:", data);
 
       try {
         const response = await axiosSecure.post("/orders", {
@@ -84,7 +84,7 @@ const BuyingForm = () => {
           managerEmail: managerEmail,
         });
 
-        console.log(response.data);
+        //console.log(response.data);
 
         if (response.data.insertedId) {
           toast.success('Order Successfully Done.');
@@ -99,11 +99,11 @@ const BuyingForm = () => {
         } else {
           toast.error("Failed to place order. Please try again.");
         }
-        console.error("Order Error:", error);
+        //console.error("Order Error:", error);
       }
     }
     else if (actionType === "stripe") {
-      console.log("Stripe Order:", data);
+      //console.log("Stripe Order:", data);
 
       const paymentInfo = {
         ...data,
@@ -127,6 +127,8 @@ const BuyingForm = () => {
 
 
   if (isLoading) return <LoadingSpinner />
+
+  scrollTo(0,0);
 
   return (
     <div>

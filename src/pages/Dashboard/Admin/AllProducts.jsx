@@ -29,6 +29,8 @@ const AllProducts = () => {
   const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
+  scrollTo(0,0);
+
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8 bg-gray-100 h-[calc(100vh-40px)]'>

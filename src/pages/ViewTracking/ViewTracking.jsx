@@ -20,6 +20,8 @@ const ViewTracking = () => {
 
   const sortedTrackings = [...trackings].reverse();
 
+  scrollTo(0,0);
+
   return (
     <div className="bg-linear-to-b from-gray-50 to-gray-100 h-[calc(100vh-40px)]">
       {/* Header */}

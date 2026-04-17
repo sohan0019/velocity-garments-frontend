@@ -26,6 +26,8 @@ const Products = () => {
 
   if (isLoading) return <LoadingSpinner />
 
+  scrollTo(0,0);
+
   return (
     <Container>
       <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>

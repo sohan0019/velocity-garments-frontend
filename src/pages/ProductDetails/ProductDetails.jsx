@@ -39,6 +39,8 @@ const ProductDetails = () => {
 
   const isActionDisabled = role === 'Admin' || role === 'Manager' || dbUser?.status === 'Suspend' || dbUser?.status === 'Pending';
 
+  scrollTo(0,0);
+
   return (
     <Container>
       <div className='mx-auto my-16 flex flex-col lg:flex-row justify-between w-full gap-12'>

@@ -61,6 +61,8 @@ const SignUp = () => {
     }
   }
 
+  scrollTo(0,0);
+
   return (
     <div className='flex justify-center items-center min-h-screen bg-white'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-blue-50 text-gray-900 border border-red-700'>
